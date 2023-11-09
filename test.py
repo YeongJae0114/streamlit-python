@@ -1,55 +1,61 @@
-import streamlit as st 
+import streamlit as st
+from function import show_page
 
-# CSS 스타일을 정의하여 사이드바를 꾸밉니다.
-st.sidebar.markdown(
+# CSS 스타일
+st.markdown(
     """
     <style>
-    .sidebar .sidebar-content {
-        background-color: #f2f2f2;
-        padding: 20px;
-        border-radius: 10px;
-    }
-    .sidebar .icon {
-        color: #ff0000;
-        font-size: 24px;
-    }
-    .sidebar .button-icon {
-        color: #00ff00;
-        font-size: 24px;
-    }
-    .sidebar .button-icon:hover {
-        color: #0000ff;
+    img {
+        max-width: 100%; 
+        height: auto; 
+        max-height: 400px; 
     }
     </style>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
-# 버튼 및 아이콘을 추가한 꾸며진 사이드바
-st.sidebar.title("Custom Sidebar")
+# Define your javascript
+
+
+container1 = st.container()
+col1, col2 = st.columns(2)
+col3, col4 = st.columns(2)
 page = "Home"
 
-if st.sidebar.button("Home", key="home_button"):
+# 사이드바
+st.sidebar.title("Custom Sidebar")
+# 페이지를 나타내는 버튼 추가
+if st.sidebar.button("Home"):
     page = "Home"
-    st.sidebar.markdown('<i class="icon bi-house"></i>', unsafe_allow_html=True)
 
-if st.sidebar.button("About", key="about_button"):
-    page = "About"
-    st.sidebar.markdown('<i class="icon bi-info-circle"></i>', unsafe_allow_html=True)
+with col1:
+    st.header("Col1")
+    st.image("https://static.streamlit.io/examples/cat.jpg")
+    if st.button("A"):
+        page = "A"
+        container1.empty()
+        show_page(container1, page)
+with col2:
+    st.header("Col2")
+    st.image("https://static.streamlit.io/examples/dog.jpg")
+    if st.button("B", key="B_button"):
+        page = "B"
+        container1.empty()
+        show_page(container1, page)
+with col3:
+    st.header("Col3")
+    st.image("https://static.streamlit.io/examples/cat.jpg")
+    if st.button("C", key="C_button"):
+        page = "C"
+        container1.empty()
+        show_page(container1, page)
+with col4:
+    st.header("Col4")
+    st.image("https://static.streamlit.io/examples/dog.jpg")
+    if st.button("D", key="D_button"):
+        page = "D"
+        container1.empty()
+        show_page(container1, page)
 
-if st.sidebar.button("Contact", key="contact_button"):
-    page = "Contact"
-    st.sidebar.markdown('<i class="icon bi-telephone"></i>', unsafe_allow_html=True)
 
-
-if page == "Home":
-    st.title("Home Page")
-    st.write("Welcome to the Home Page!")
-
-elif page == "About":
-    st.title("About Page")
-    st.write("This is the About Page. Here you can learn about us.")
-
-elif page == "Contact":
-    st.title("Contact Page")
-    st.write("You can contact us at contact@example.com.")    
