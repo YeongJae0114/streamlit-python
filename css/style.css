@@ -1,0 +1,10 @@
+.custom-header {
+    background-color: lightblue;
+    color: darkblue;
+    font-size: 24px;
+}
+
+.custom-text {
+    font-weight: bold;
+    color: green;
+}
