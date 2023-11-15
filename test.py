@@ -1,9 +1,9 @@
 import streamlit as st
-from function import show_page
 import requests
 import base64
 from PIL import Image
 from io import BytesIO
+from streamlit.components.v1 import html
 
 # requests data
 response = requests.get('http://43.200.254.150:8080/parking/')
@@ -19,16 +19,23 @@ if response.status_code == 200:
     # JSON 형식으로 응답 받기
     data_list = response.json()
     
-    for i in range(len(data_list)):
+    for i in range(1,4):
         data = (data_list[i]['image'])
-        car1 = '현재 차량 : ', data_list[i]['currentcar'] , '남은 주차 자리 ',data_list[i]['emptyspace'] , '총 주차 자리' ,data_list[i]['totalspace']
         image_data = base64.b64decode(data)
         image = Image.open(BytesIO(image_data))
         img_endcode.append(image)
-        car_data.append(car1)
+
+    for i in range(len(data_list)):
+        car_dic ={
+            'currentcar' : data_list[i]['currentcar'],
+            'emptyspace' :  data_list[i]['emptyspace'],
+            'totalspace' : data_list[i]['totalspace'],
+        }
+        car_data.append(car_dic)
+ 
 else:
     print(f"Error: {response.status_code}")
- 
+
 
 
 # CSS 스타일
@@ -38,7 +45,7 @@ st.markdown(
     img {
         max-width: 100%; 
         height: auto; 
-        max-height: 400px; 
+        max-height: 300px; 
     }
     </style>
     """,
@@ -46,6 +53,44 @@ st.markdown(
 )
 
 # Define your javascript
+
+
+scroll_to_top_js = """
+window.scrollTo(0, 0);
+"""
+
+# Wrap the JavaScript code as HTML
+scroll_to_top_html = f"<script>{scroll_to_top_js}</script>"
+
+# Function to scroll to the top of the page
+def scroll_to_top():
+    html(scroll_to_top_html)
+
+def show_page(container1, page, data):
+    scroll_to_top()  # Scroll to the top of the page
+    if page == 'A':
+        with container1:
+            st.title(data_list[0]['parkingname'])
+            st.image('img/n-7.jpeg')
+            st.subheader('현재 차량 : {} '.format(data['currentcar']))
+            st.subheader('남은 자리 : {}'.format(data['emptyspace']))
+            st.subheader('총 주차공간 : {}'.format(data['totalspace']))
+
+    elif page == "B":
+        with container1:
+            st.title(data_list[1]['parkingname'])
+            st.image('img/test2.jpeg')
+            st.text(data)
+    elif page == "C":
+        with container1:
+            st.title(data_list[2]['parkingname'])
+            st.image('img/test3.jpeg')
+            st.text(data)
+    elif page == "D":
+        with container1:
+            st.title(data_list[3]['parkingname'])
+            st.image('img/test4.jpeg')
+            st.text(data)
 
 
 container1 = st.container()
@@ -61,7 +106,7 @@ if st.sidebar.button("Home"):
 
 with col1:
     st.header(data_list[0]['parkingname'])
-    st.image(img_endcode[0])
+    st.image('img/N-7_.jpeg')
     if st.button("주차장 현황"):
         page = "A"
         container1.empty()
@@ -82,8 +127,10 @@ with col3:
         show_page(container1, page, car_data[2])
 with col4:
     st.header(data_list[3]['parkingname'])
-    st.image(img_endcode[3])
+    st.image('img/s3.jpeg')
     if st.button("주차장 현황", key="D_button"):
         page = "D"
         container1.empty()
         show_page(container1, page, car_data[3])
+
+

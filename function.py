@@ -19,19 +19,19 @@ def show_page(container1, page, data):
         with container1:
             st.title("A 주차장")
             st.image('img/test1.jpeg')
-            st.write(data)
+            st.text(data)
     elif page == "B":
         with container1:
             st.title("B 주차장")
             st.image('img/test2.jpeg')
-            st.write(data)
+            st.text(data)
     elif page == "C":
         with container1:
             st.title("C 주차장")
             st.image('img/test3.jpeg')
-            st.write(data)
+            st.text(data)
     elif page == "D":
         with container1:
             st.title("D 주차장")
             st.image('img/test4.jpeg')
-            st.write(data)
+            st.text(data)
